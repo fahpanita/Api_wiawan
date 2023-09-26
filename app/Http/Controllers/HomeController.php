@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Stock;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Products;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class HomeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +14,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
-        $products = Products::get();
-        return response()->json($products, 200);
+        //$products = Products::get();
+        //return response()->json($products, 200);
     }
 
     /**
