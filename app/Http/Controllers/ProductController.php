@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Products;
+use App\Models\ProductsCataories;
+use App\Models\ProductsEvents;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,8 +26,10 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = json_decode($request->getContent());
+
         // return response()->json(["message" => $data], 200);
         // $data = json_decode(file_get_contents('php://input'));
+        // return response($data->categories_id);
         $array_data = (array)$data;
         $validator = Validator::make($array_data, [
             'name' => 'required|string|max:255',
@@ -50,10 +54,26 @@ class ProductController extends Controller
         $products->detailProduct = $data->detailProduct;
         $products->detailShipping = $data->detailShipping;
         $products->condition = $data->condition;
-        $products->categories_id = $data->categories_id;
-        $products->events_id = $data->events_id;
         $products->typeProduct = $data->typeProduct;
         $products->save();
+
+        // return response($data->categories_id);
+
+        foreach ($data->categories_id as $catagory) {
+            $productsCatagorirs = new ProductsCataories();
+            $productsCatagorirs->product_id = $products->id;
+            $productsCatagorirs->cataory_id = $catagory;
+            $productsCatagorirs->save();
+        }
+
+        foreach ($data->events_id as $event) {
+
+            $productsEvents = new ProductsEvents();
+            $productsEvents->product_id = $products->id;
+            $productsEvents->event_id = $event;
+
+            $productsEvents->save();
+        }
         return response()->json(["message" => "บันทึกสำเร็จ"], 200);
     }
 
