@@ -14,7 +14,8 @@ class ProductController extends Controller
 
     public function index()
     {
-        //
+        $products = Products::get();
+        return response()->json($products, 200);
     }
 
 
