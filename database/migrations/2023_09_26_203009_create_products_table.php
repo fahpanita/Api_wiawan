@@ -17,11 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('price');
-            $table->string('picture');
+            $table->integer('stock');
+            $table->string('thumbnail');
             $table->string('detailProduct');
             $table->string('detailShipping');
             $table->string('condition');
             $table->string('typeProduct');
+            $table->string('typeShipping');
             $table->timestamps();
         });
     }

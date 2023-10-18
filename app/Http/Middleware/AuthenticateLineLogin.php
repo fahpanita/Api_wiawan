@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Request;
 use Concerns\InteractsWithInput;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class AuthenticateLineLogin
@@ -47,18 +48,23 @@ class AuthenticateLineLogin
             'Authorization' => "Bearer " . $token,
         ])->get('https://api.line.me/v2/profile');
 
-        $users = User::where("line_id", $responseProfile["userId"])->first();
+        $user = User::where("line_id", $responseProfile["userId"])->first();
 
-        if (!$users) {
+        if (!$user) {
             //return response("Not Found User", 400);
             $userModel = new User();
             $userModel->line_id = $responseProfile["userId"];
             $userModel->name = $responseProfile["displayName"];
             $userModel->email = $responseIdToken["email"];
             $userModel->picture = $responseProfile["pictureUrl"];
+            $userModel->role = 'user';
 
             $userModel->save();
         };
+
+        $user = User::where("line_id", $responseProfile["userId"])->first();
+
+        Auth::login($user);
 
 
         //return response($users, 400);

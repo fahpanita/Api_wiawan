@@ -48,6 +48,23 @@ class Kernel extends HttpKernel
             // \Illuminate\Routing\Middleware\SubstituteBindings::class,
 
         ],
+
+        // 'auth.user' => [
+        //     \App\Http\Middleware\AuthenticateLineLogin::class,
+        //     \App\Http\Middleware\CheckRoleUser::class,
+        // ],
+
+        // 'auth.admin' => [
+        //     \App\Http\Middleware\AuthenticateLineLogin::class,
+        //     \App\Http\Middleware\CheckRoleAdmin::class,
+
+        // ],
+
+        'auth.normal' => [
+            \App\Http\Middleware\AuthenticateLineLogin::class,
+
+        ],
+
     ];
 
     /**
@@ -67,6 +84,10 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+
+        'auth.user' => \App\Http\Middleware\AuthenticateLineLogin::class,
+        'role' => \App\Http\Middleware\CheckRoleUser::class,
+
         // 'line' => \Illuminate\Auth\Middleware\AuthenticateLineLogin::class,
 
     ];

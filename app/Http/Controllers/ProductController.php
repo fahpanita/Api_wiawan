@@ -35,14 +35,27 @@ class ProductController extends Controller
         $validator = Validator::make($array_data, [
             'name' => 'required|string|max:255',
             'price' => 'required',
-            'picture' => 'required',
+            'stock' => 'required',
+            'thumbnail' => 'required',
             'detailProduct' => 'required',
             'detailShipping' => 'required',
             'condition' => '',
             'categories_id' => 'required',
             'events_id' => 'required',
             'typeProduct' => 'required',
+            'typeShipping' => 'required',
 
+        ], [
+            "name.required" => "กรุณากรอกชื่อ",
+            "price.required" => "กรุณากรอกราคา",
+            "stock.required" => "กรุณากรอกจำนวนสินค้า",
+            "thumbnail.required" => "กรุณาใส่รูป",
+            "detailProduct.required" => "กรุณากรอกรายละเอียดสินค้า",
+            "detailShipping.required" => "กรุณากรอกรายละเอียดการจัดส่ง",
+            "categories_id.required" => "กรุณาเลือกหมวดหมู่สินค้า",
+            "events_id.required" => "กรุณาเลือกหมวดหมู่เทศกาล",
+            "typeProduct.required" => "กรุณาเลือกประเภทสินค้า",
+            "typeShipping.required" => "กรุณาเลือกประเภทการจัดส่ง",
         ]);
         if ($validator->fails()) {
             return response()->json(["message" => $validator->errors()->first()], 400);
@@ -51,11 +64,13 @@ class ProductController extends Controller
         $products = new Products();
         $products->name = $data->name;
         $products->price = $data->price;
-        $products->picture = $data->picture;
+        $products->stock = $data->stock;
+        $products->thumbnail = $data->thumbnail;
         $products->detailProduct = $data->detailProduct;
         $products->detailShipping = $data->detailShipping;
         $products->condition = $data->condition;
         $products->typeProduct = $data->typeProduct;
+        $products->typeShipping = $data->typeShipping;
         $products->save();
 
         // return response($data->categories_id);
@@ -95,14 +110,28 @@ class ProductController extends Controller
         $validator = Validator::make($array_data, [
             'name' => 'required|string|max:255',
             'price' => 'required',
-            'picture' => 'required',
+            'stock' => 'required',
+            'thumbnail' => 'required',
             'detailProduct' => 'required',
             'detailShipping' => 'required',
             'condition' => '',
             'categories_id' => 'required',
             'events_id' => 'required',
             'typeProduct' => 'required',
+            'typeShipping' => 'required',
+        ], [
+            "name.required" => "กรุณากรอกชื่อ",
+            "price.required" => "กรุณากรอกราคา",
+            "stock.required" => "กรุณากรอกจำนวนสินค้า",
+            "thumbnail.required" => "กรุณาใส่รูป",
+            "detailProduct.required" => "กรุณากรอกรายละเอียดสินค้า",
+            "detailShipping.required" => "กรุณากรอกรายละเอียดการจัดส่ง",
+            "categories_id.required" => "กรุณาเลือกหมวดหมู่สินค้า",
+            "events_id.required" => "กรุณาเลือกหมวดหมู่เทศกาล",
+            "typeProduct.required" => "กรุณาเลือกประเภทสินค้า",
+            "typeShipping.required" => "กรุณาเลือกประเภทการจัดส่ง",
         ]);
+
         if ($validator->fails()) {
             return response()->json(["message" => $validator->errors()->first()], 400);
         }
@@ -110,13 +139,15 @@ class ProductController extends Controller
         $products = Products::where('id', $id)->first();
         $products->name = $data->name;
         $products->price = $data->price;
-        $products->picture = $data->picture;
+        $products->stock = $data->stock;
+        $products->thumbnail = $data->thumbnail;
         $products->detailProduct = $data->detailProduct;
         $products->detailShipping = $data->detailShipping;
         $products->condition = $data->condition;
         $products->categories_id = $data->categories_id;
         $products->events_id = $data->events_id;
         $products->typeProduct = $data->typeProduct;
+        $products->typeShipping = $data->typeShipping;
         $products->update();
         return response()->json(["message" => "แก้ไขสำเร็จ"], 200);
     }
