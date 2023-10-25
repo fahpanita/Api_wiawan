@@ -155,7 +155,7 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
-        //
+
         if (!$id) {
             return response()->json(["message" => "ไม่พบ ID"], 400);
         }
