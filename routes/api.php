@@ -28,10 +28,11 @@ Route::group(['middleware' => ['auth.user', 'role:admin']], function () {
     Route::get("parent-catagories", [CatagoriesController::class, 'parentCatagory']);
     Route::put("update-catagories/{id}", [CatagoriesController::class, 'update']);
     Route::post("destroy-catagories/{id}", [CatagoriesController::class, 'destroy']);
-    Route::get("product", [ProductController::class, 'index']);
+    Route::post("products", [ProductController::class, 'store']);
     Route::put("update-products/{id}", [ProductController::class, 'update']);
     Route::post("destroy-products/{id}", [ProductController::class, 'destroy']);
     Route::get("cardevent", [CardEventsController::class, 'index']);
+    Route::post("cardevent", [CardEventsController::class, 'store']);
     Route::put("update-cardevent/{id}", [CardEventsController::class, 'update']);
     Route::post("destroy-cardevent/{id}", [CardEventsController::class, 'destroy']);
 });
@@ -48,8 +49,9 @@ Route::middleware(['auth.user'])->group(function () {
 
 Route::get('image/{path}', [ImagesController::class, 'show']);
 Route::post('image', [ImagesController::class, 'store']);
-Route::post("cardevent", [CardEventsController::class, 'store']);
-Route::post("products", [ProductController::class, 'store']);
+Route::get("product", [ProductController::class, 'index']);
+Route::get("product/{id}", [ProductController::class, 'getId']);
+
 
 // Route::get("stock", [ProductController::class, 'index']);
 

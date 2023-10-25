@@ -18,6 +18,12 @@ class ProductController extends Controller
         return response()->json($products, 200);
     }
 
+    public function getId($id)
+    {
+        $products = Products::where('id', $id)->first();
+        return response()->json($products, 200);
+    }
+
 
     public function create()
     {
@@ -27,10 +33,6 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = json_decode($request->getContent());
-
-        // return response()->json(["message" => $data], 200);
-        // $data = json_decode(file_get_contents('php://input'));
-        // return response($data->categories_id);
         $array_data = (array)$data;
         $validator = Validator::make($array_data, [
             'name' => 'required|string|max:255',
@@ -73,7 +75,6 @@ class ProductController extends Controller
         $products->typeShipping = $data->typeShipping;
         $products->save();
 
-        // return response($data->categories_id);
 
         foreach ($data->categories_id as $catagory) {
             $productsCatagorirs = new ProductsCataories();
