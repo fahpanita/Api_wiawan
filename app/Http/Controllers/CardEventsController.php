@@ -16,6 +16,12 @@ class CardEventsController extends Controller
         return response()->json($cardEvents, 200);
     }
 
+    public function getId($id)
+    {
+        $cardEvents = CardEvents::where('id', $id)->first();
+        return response()->json($cardEvents, 200);
+    }
+
 
     public function create()
     {
