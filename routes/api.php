@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BuyProductController;
+use App\Http\Controllers\BuyProductsController;
 use App\Http\Controllers\CardEventsController;
 use App\Http\Controllers\CatagoriesController;
 use App\Http\Controllers\EventController;
@@ -29,6 +31,7 @@ Route::group(['middleware' => ['auth.user', 'role:admin']], function () {
     Route::put("update-catagories/{id}", [CatagoriesController::class, 'update']);
     Route::post("destroy-catagories/{id}", [CatagoriesController::class, 'destroy']);
     Route::post("products", [ProductController::class, 'store']);
+    Route::post("buyproduct", [BuyProductsController::class, 'store']);
     Route::put("update-products/{id}", [ProductController::class, 'update']);
     Route::post("destroy-products/{id}", [ProductController::class, 'destroy']);
     Route::post("cardevent", [CardEventsController::class, 'store']);
