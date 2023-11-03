@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\OrderProducts;
 use App\Models\Products;
 use App\Models\ProductsCataories;
 use App\Models\ProductsEvents;
@@ -91,6 +92,7 @@ class ProductController extends Controller
 
             $productsEvents->save();
         }
+
         return response()->json(["message" => "บันทึกสำเร็จ"], 200);
     }
 

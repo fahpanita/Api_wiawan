@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\BuyProductController;
 use App\Http\Controllers\BuyProductsController;
 use App\Http\Controllers\CardEventsController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\CatagoriesController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImagesController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AuthenticateLineLogin;
@@ -37,6 +39,8 @@ Route::group(['middleware' => ['auth.user', 'role:admin']], function () {
     Route::post("cardevent", [CardEventsController::class, 'store']);
     Route::put("update-cardevent/{id}", [CardEventsController::class, 'update']);
     Route::post("destroy-cardevent/{id}", [CardEventsController::class, 'destroy']);
+    Route::post("address", [AddressController::class, 'store']);
+    Route::post("order", [OrderController::class, 'store']);
 });
 
 Route::group(['middleware' => ['auth.user', 'role:user']], function () {
