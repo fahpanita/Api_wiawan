@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AuthenticateLineLogin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -33,14 +34,14 @@ Route::group(['middleware' => ['auth.user', 'role:admin']], function () {
     Route::put("update-catagories/{id}", [CatagoriesController::class, 'update']);
     Route::post("destroy-catagories/{id}", [CatagoriesController::class, 'destroy']);
     Route::post("products", [ProductController::class, 'store']);
-    Route::post("buyproduct", [BuyProductsController::class, 'store']);
     Route::put("update-products/{id}", [ProductController::class, 'update']);
     Route::post("destroy-products/{id}", [ProductController::class, 'destroy']);
     Route::post("cardevent", [CardEventsController::class, 'store']);
     Route::put("update-cardevent/{id}", [CardEventsController::class, 'update']);
     Route::post("destroy-cardevent/{id}", [CardEventsController::class, 'destroy']);
     Route::post("address", [AddressController::class, 'store']);
-    Route::post("order", [OrderController::class, 'store']);
+    // Route::post("order", [OrderController::class, 'store']);
+
 });
 
 Route::group(['middleware' => ['auth.user', 'role:user']], function () {
@@ -48,7 +49,9 @@ Route::group(['middleware' => ['auth.user', 'role:user']], function () {
 
 Route::middleware(['auth.user'])->group(function () {
     Route::get("me", [HomeController::class, 'index']); //ดึงข้อมูลฝั่งเรา
-
+    // Route::post("address", [AddressController::class, 'store']);
+    Route::post("order", [OrderController::class, 'store']);
+    // Route::post("buyproduct", [BuyProductsController::class, 'store']);
 }); // ต้อง login ก่อน แต่ role อะไรก็ได้
 
 //อันไหนไม่ต้อง login ไว้ข้างนอก
@@ -60,7 +63,20 @@ Route::get("product/{id}", [ProductController::class, 'getId']);
 Route::get("cardevent", [CardEventsController::class, 'index']);
 Route::get("cardevent/{id}", [CardEventsController::class, 'getId']);
 
+Route::get("map/address", function (Request $request) {
+    $url = "https://api.longdo.com/map/services/address?lon=$request->lon&lat=$request->lat&key=$request->key";
+    // $url = "https://api.longdo.com/map/services/addresses?lat=" . $request->lat . "&lon=" . $request->lon . "&key=" . $request->key;
+    $respont = Http::get($url);
+    return response()->json($respont->json(), $respont->status());
+});
 
+Route::get("getorder", function () {
+    $pp = new \KS\PromptPay();
+
+    $target = '088-656-5433';
+    $amount = 420;
+    dd($pp->generatePayload($target, $amount));
+});
 // Route::get("stock", [ProductController::class, 'index']);
 
 //});
