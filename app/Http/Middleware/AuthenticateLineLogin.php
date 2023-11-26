@@ -66,11 +66,6 @@ class AuthenticateLineLogin
 
         Auth::login($user);
 
-
-        //return response($users, 400);
-
-        //return response($responseProfile->json(), 400);
-        //return redirect();
         return $next($request);
     }
 }

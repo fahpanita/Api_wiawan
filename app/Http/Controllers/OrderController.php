@@ -55,7 +55,7 @@ class OrderController extends Controller
         $order = new Orders();
         $order->user_id = Auth::user()->id;
         $order->status = "Check Payment";
-        $order->type_shipping = "Store";
+        $order->type_shipping = $order->type_shipping;
         $order->order_date = $datetime->format('D-M-Y');
 
 

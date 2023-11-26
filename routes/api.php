@@ -65,8 +65,13 @@ Route::get("cardevent/{id}", [CardEventsController::class, 'getId']);
 
 Route::get("map/address", function (Request $request) {
     $url = "https://api.longdo.com/map/services/address?lon=$request->lon&lat=$request->lat&key=$request->key";
-    // $url = "https://api.longdo.com/map/services/addresses?lat=" . $request->lat . "&lon=" . $request->lon . "&key=" . $request->key;
     $respont = Http::get($url);
+    return response()->json($respont->json(), $respont->status());
+});
+
+Route::post("notify", function () {
+    $url = "https://notify-api.line.me/api/notify";
+    $respont = Http::post($url);
     return response()->json($respont->json(), $respont->status());
 });
 
