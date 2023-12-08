@@ -16,6 +16,10 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
+            $table->string("order_id");
+            $table->decimal('price');
+            $table->string("status");
+            $table->string('slip_img');
             $table->timestamps();
         });
     }

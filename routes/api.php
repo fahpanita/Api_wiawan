@@ -25,12 +25,10 @@ Route::group(['middleware' => ['auth.user', 'role:admin']], function () {
     Route::get("users", [UserController::class, 'index']);
     Route::post("event", [EventController::class, 'store']);
     Route::post("subevent", [EventController::class, 'storeSub']);
-    Route::get("parent-event", [EventController::class, 'parentEvent']);
     Route::put("update-event/{id}", [EventController::class, 'update']);
     Route::post("destroy-event/{id}", [EventController::class, 'destroy']);
     Route::post("catagories", [CatagoriesController::class, 'store']);
     Route::post("subcatagories", [CatagoriesController::class, 'storeSub']);
-    Route::get("parent-catagories", [CatagoriesController::class, 'parentCatagory']);
     Route::put("update-catagories/{id}", [CatagoriesController::class, 'update']);
     Route::post("destroy-catagories/{id}", [CatagoriesController::class, 'destroy']);
     Route::post("products", [ProductController::class, 'store']);
@@ -62,6 +60,8 @@ Route::get("product", [ProductController::class, 'index']);
 Route::get("product/{id}", [ProductController::class, 'getId']);
 Route::get("cardevent", [CardEventsController::class, 'index']);
 Route::get("cardevent/{id}", [CardEventsController::class, 'getId']);
+Route::get("parent-event", [EventController::class, 'parentEvent']);
+Route::get("parent-catagories", [CatagoriesController::class, 'parentCatagory']);
 
 Route::get("map/address", function (Request $request) {
     $url = "https://api.longdo.com/map/services/address?lon=$request->lon&lat=$request->lat&key=$request->key";
@@ -69,7 +69,7 @@ Route::get("map/address", function (Request $request) {
     return response()->json($respont->json(), $respont->status());
 });
 
-Route::post("notify", function () {
+Route::post("notify", function (Request $request) {
     $url = "https://notify-api.line.me/api/notify";
     $respont = Http::post($url);
     return response()->json($respont->json(), $respont->status());
