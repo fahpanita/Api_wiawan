@@ -9,6 +9,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AuthenticateLineLogin;
@@ -21,6 +22,8 @@ use Illuminate\Support\Facades\Route;
 // });
 
 //Route::middleware(['api'])->group(function () {
+
+// เฉพาะ role admin
 Route::group(['middleware' => ['auth.user', 'role:admin']], function () {
     Route::get("users", [UserController::class, 'index']);
     Route::post("event", [EventController::class, 'store']);
@@ -42,15 +45,18 @@ Route::group(['middleware' => ['auth.user', 'role:admin']], function () {
 
 });
 
+// เฉพาะ role user
 Route::group(['middleware' => ['auth.user', 'role:user']], function () {
 });
 
+// ต้อง login ก่อน แต่ role อะไรก็ได้
 Route::middleware(['auth.user'])->group(function () {
     Route::get("me", [HomeController::class, 'index']); //ดึงข้อมูลฝั่งเรา
     // Route::post("address", [AddressController::class, 'store']);
     Route::post("order", [OrderController::class, 'store']);
     // Route::post("buyproduct", [BuyProductsController::class, 'store']);
-}); // ต้อง login ก่อน แต่ role อะไรก็ได้
+    Route::post("payment", [PaymentsController::class, 'store']);
+});
 
 //อันไหนไม่ต้อง login ไว้ข้างนอก
 
@@ -62,6 +68,7 @@ Route::get("cardevent", [CardEventsController::class, 'index']);
 Route::get("cardevent/{id}", [CardEventsController::class, 'getId']);
 Route::get("parent-event", [EventController::class, 'parentEvent']);
 Route::get("parent-catagories", [CatagoriesController::class, 'parentCatagory']);
+Route::get("getPromptPay", [PaymentsController::class, 'getPromptPay']);
 
 Route::get("map/address", function (Request $request) {
     $url = "https://api.longdo.com/map/services/address?lon=$request->lon&lat=$request->lat&key=$request->key";
@@ -75,13 +82,13 @@ Route::post("notify", function (Request $request) {
     return response()->json($respont->json(), $respont->status());
 });
 
-Route::get("getorder", function () {
-    $pp = new \KS\PromptPay();
+// Route::get("getorder", function () {
+//     $pp = new \KS\PromptPay();
 
-    $target = '088-656-5433';
-    $amount = 420;
-    dd($pp->generatePayload($target, $amount));
-});
+//     $target = '088-656-5433';
+//     $amount = 420;
+//     dd($pp->generatePayload($target, $amount));
+// });
 // Route::get("stock", [ProductController::class, 'index']);
 
 //});
