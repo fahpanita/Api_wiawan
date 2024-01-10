@@ -20,11 +20,13 @@ class PaymentsController extends Controller
 
     public function getPromptPay(Request $request)
     {
-        $totalWithShipping = $request->input('totalWithShipping');
+        // $totalWithShipping = $request->input('totalWithShipping');
 
         $pp = new PromptPay();
         $target = '088-656-5433';
-        $amount = $totalWithShipping;
+        $amount = 300;
+
+        dd($amount);
 
         $payload = $pp->generatePayload($target, $amount);
 
@@ -56,7 +58,7 @@ class PaymentsController extends Controller
         $validator = Validator::make($array_data, [
             'order_id' => 'required|exists:orders,id',
             'price' => 'required|numeric',
-            'slip_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'slip_img' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -67,14 +69,14 @@ class PaymentsController extends Controller
         $order->status = "Paid";
         $order->save();
 
+        $orderId = (string)$order->id;
+
         $payment = new Payment();
         $payment->user_id = Auth::id();
-        $payment->order_id = $data->order_id;
+        $payment->order_id = $orderId;
         $payment->price = $data->price;
         $payment->status = "Paid";
-
         $payment->slip_img = $data->slip_img;
-
         $payment->save();
 
         return response()->json(["message" => "บันทึกสำเร็จ"], 200);
