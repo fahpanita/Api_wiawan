@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Gallery;
 use App\Models\OrderProducts;
 use App\Models\Products;
 use App\Models\ProductsCataories;
 use App\Models\ProductsEvents;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -35,6 +37,7 @@ class ProductController extends Controller
     {
         $data = json_decode($request->getContent());
         $array_data = (array)$data;
+
         $validator = Validator::make($array_data, [
             'name' => 'required|string|max:255',
             'price' => 'required',
@@ -93,12 +96,23 @@ class ProductController extends Controller
             $productsEvents->save();
         }
 
+        $products->save();
+
+        $galleryImages = $request->file('gallery');
+
+        foreach ($galleryImages as $image) {
+            // Save each image to the database
+            $gallery = new Gallery();
+            $gallery->product_id = $products->id;
+            $gallery->name = $image->store('gallery', 'public');
+            $gallery->save();
+        }
+
         return response()->json(["message" => "บันทึกสำเร็จ"], 200);
     }
 
     public function show($id)
     {
-        //
     }
 
     public function edit($id)

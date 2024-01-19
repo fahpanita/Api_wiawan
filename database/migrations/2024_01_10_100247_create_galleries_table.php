@@ -6,11 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
         Schema::create('galleries', function (Blueprint $table) {
@@ -18,14 +14,13 @@ return new class extends Migration
             $table->string("product_id");
             $table->string('name');
             $table->timestamps();
+
+            // In the migration file for galleries table
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+
     public function down()
     {
         Schema::dropIfExists('galleries');

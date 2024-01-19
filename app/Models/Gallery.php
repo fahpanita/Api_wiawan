@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Gallery extends Model
 {
-    use HasFactory;
+    protected $fillable = ['product_id', 'name'];
+
+    public function product()
+    {
+        return $this->belongsTo(Products::class);
+    }
 }
