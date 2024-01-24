@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\OrderItem;
 use App\Models\Orders;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use KS\PromptPay;
 
@@ -22,26 +24,32 @@ class PaymentsController extends Controller
     {
         // $totalWithShipping = $request->input('totalWithShipping');
 
+        $data = json_decode($request->getContent());
+        $array_data = (array)$data;
+
+        $validator = Validator::make($array_data, [
+            'order_id' => 'required|exists:orders,id',
+            'price' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(["message" => $validator->errors()->first()], 400);
+        }
+
+        return response()->json(["message" => "บันทึกสำเร็จ"], 200);
+
         $pp = new PromptPay();
         $target = '088-656-5433';
-        $amount = 300;
 
-        dd($amount);
+        $totalPriceSum = OrderItem::where('order_id', '=', $request->input('order_id'))
+            ->sum(DB::raw('price * amount'));
 
-        $payload = $pp->generatePayload($target, $amount);
+        $payload = $pp->generatePayload($target, $totalPriceSum);
 
-        return response()->json(['payload' => $payload, 'amount' => $amount]);
+        dd($payload);
+
+        return response()->json(['payload' => $payload, 'amount' => $totalPriceSum]);
     }
-
-    // public function getPromptPay($formattedTotal)
-    // {
-    //     $pp = new PromptPay();
-
-    //     $target = '088-656-5433';
-    //     $amount = $formattedTotal;
-
-    //     return response()->json(['payload' => $pp->generatePayload($target, $amount)]);
-    // }
 
 
     public function create()
@@ -53,31 +61,43 @@ class PaymentsController extends Controller
     public function store(Request $request)
     {
         $data = json_decode($request->getContent());
-        $array_data = (array)$data;
+        $array_data = (array) $data;
 
         $validator = Validator::make($array_data, [
             'order_id' => 'required|exists:orders,id',
-            'price' => 'required|numeric',
-            'slip_img' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'slip_img' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json(["message" => $validator->errors()->first()], 400);
         }
 
-        $order = Orders::find($request->input('order_id'));
-        $order->status = "Paid";
-        $order->save();
+        $order_id = $request->input('order_id');
 
-        $orderId = (string)$order->id;
+        $totalPriceSum = (float)OrderItem::where('order_id', $order_id)
+            ->sum(DB::raw('price * amount'));
+
+        // dd($totalPriceSum);
+
+        $priceShiping = (float)DB::table('order_items')
+            ->select('products.typeShipping')
+            ->join('products', 'order_items.product_id', '=', 'products.id')
+            ->where('order_items.order_id', '=', $request->order_id)
+            ->orderBy('products.typeShipping', 'desc')
+            ->first()->typeShipping;
+
+
+        $totalPrice = $totalPriceSum + $priceShiping;
+
 
         $payment = new Payment();
         $payment->user_id = Auth::id();
-        $payment->order_id = $orderId;
-        $payment->price = $data->price;
+        $payment->order_id = $data->order_id;
+        $payment->price = $totalPrice;
         $payment->status = "Paid";
         $payment->slip_img = $data->slip_img;
         $payment->save();
+
 
         return response()->json(["message" => "บันทึกสำเร็จ"], 200);
     }

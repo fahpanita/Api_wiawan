@@ -30,6 +30,7 @@ class AddressController extends Controller
             'name' => 'required|string|max:255',
             'street' => 'required',
             'district' => 'required',
+            'subdistrict' => 'required',
             'province' => 'required',
             'zip_code' => 'required',
             'phone' => 'required',
@@ -37,7 +38,8 @@ class AddressController extends Controller
         ], [
             "name.required" => "กรุณากรอกชื่อ",
             "street.required" => "กรุณาบ้านเลขที่/ซอย/ถนน",
-            "district.required" => "กรุณากรอกตำบล/อำเภอ",
+            "district.required" => "กรุณากรอกอำเภอ",
+            'subdistrict.required' => 'กรุณากรอกตำบล',
             "province.required" => "กรุณากรอกจังหวัด",
             "zip_code.required" => "กรุณากรอกรหัสไปรษณีย์",
             "phone.required" => "กรุณากรอกเบอร์โทร",
@@ -50,12 +52,13 @@ class AddressController extends Controller
         $address->name = $data->name;
         $address->street = $data->street;
         $address->district = $data->district;
+        $address->subdistrict = $data->subdistrict;
         $address->province = $data->province;
         $address->zip_code = $data->zip_code;
         $address->phone = $data->phone;
         $address->save();
 
-        return response()->json(["message" => "บันทึกสำเร็จ"], 200);
+        return response()->json(["id" => $address->id], 200);
     }
 
 

@@ -43,11 +43,15 @@ class OrderController extends Controller
             'product.*.id' => 'required',
             'product.*.amount' => 'required',
             'product.*.price' => 'required',
+            'type_shipping' => 'required',
+            'address' => 'required',
 
         ], [
             "product.*.id" => "กรุณาเลือกสินค้า",
             "product.*.amount" => "กรุณากรอกจำนวน",
             "product.*.price" => "กรุณากรอกราคา",
+            'type_shipping.required' => 'กรุณาเลือกประเภทการจัดส่ง',
+            'address.required' => 'ไม่พบID Address',
         ]);
 
         if ($validator->fails()) {
@@ -59,13 +63,13 @@ class OrderController extends Controller
         $order = new Orders();
         $order->user_id = Auth::user()->id;
         $order->status = "Check Payment";
-        $order->type_shipping = "รับหน้าร้าน";
-        // $order->type_shipping = $data->type_shipping;
+        // $order->type_shipping = "รับหน้าร้าน";
+        $order->type_shipping = $data->type_shipping;
         $order->order_date = $datetime->format('D-M-Y');
 
 
         if ($data->address) {
-            $order->address = $data->address;
+            $order->address_id = $data->address;
         }
 
         $order->save();
@@ -197,7 +201,7 @@ class OrderController extends Controller
             return response($responseNotify, 400);
         }
 
-        return response()->json(["message" => "บันทึกสำเร็จ"], 200);
+        return response()->json(["id" => $orderId], 200);
     }
 
 
