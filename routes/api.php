@@ -40,7 +40,8 @@ Route::group(['middleware' => ['auth.user', 'role:admin']], function () {
     Route::post("cardevent", [CardEventsController::class, 'store']);
     Route::put("update-cardevent/{id}", [CardEventsController::class, 'update']);
     Route::post("destroy-cardevent/{id}", [CardEventsController::class, 'destroy']);
-    Route::post("address", [AddressController::class, 'store']);
+
+
     // Route::post("order", [OrderController::class, 'store']);
 
 });
@@ -56,6 +57,7 @@ Route::middleware(['auth.user'])->group(function () {
     Route::post("order", [OrderController::class, 'store']);
     // Route::post("buyproduct", [BuyProductsController::class, 'store']);
     Route::post("payment", [PaymentsController::class, 'store']);
+    Route::post("address", [AddressController::class, 'store']);
 });
 
 //อันไหนไม่ต้อง login ไว้ข้างนอก
@@ -81,6 +83,8 @@ Route::post("notify", function (Request $request) {
     $respont = Http::post($url);
     return response()->json($respont->json(), $respont->status());
 });
+
+Route::get("getSeller", [HomeController::class, 'getSeller']);
 
 // Route::get("getorder", function () {
 //     $pp = new \KS\PromptPay();

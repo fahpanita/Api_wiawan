@@ -118,9 +118,10 @@ class OrderController extends Controller
                                 "contents" => [
                                     [
                                         "type" => "text",
-                                        "text" => "ยืนยันสถานะคำสั่งซื้อ",
+                                        "text" => "ได้รับคำสั่งซื้อ",
                                         "weight" => "bold",
                                         "size" => "xl",
+                                        "align" => "center"
                                     ],
                                     ["type" => "separator"],
                                     [

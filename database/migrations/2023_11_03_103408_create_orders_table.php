@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string("user_id");
-            $table->string("address")->nullable();
+            $table->string("address_id")->nullable();
             $table->string("status");
             $table->string("type_shipping")->nullable();
             $table->string("order_date");

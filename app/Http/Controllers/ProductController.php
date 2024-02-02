@@ -98,15 +98,15 @@ class ProductController extends Controller
 
         $products->save();
 
-        $galleryImages = $request->file('gallery');
+        // $galleryImages = $request->file('gallery');
 
-        foreach ($galleryImages as $image) {
-            // Save each image to the database
-            $gallery = new Gallery();
-            $gallery->product_id = $products->id;
-            $gallery->name = $image->store('gallery', 'public');
-            $gallery->save();
-        }
+        // foreach ($galleryImages as $image) {
+        //     // Save each image to the database
+        //     $gallery = new Gallery();
+        //     $gallery->product_id = $products->id;
+        //     $gallery->name = $image->store('gallery', 'public');
+        //     $gallery->save();
+        // }
 
         return response()->json(["message" => "บันทึกสำเร็จ"], 200);
     }
