@@ -11,13 +11,28 @@ use App\Models\ProductsEvents;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
 
 class ProductController extends Controller
 {
 
     public function index()
     {
-        $products = Products::get();
+        $products = DB::table('products')
+            ->select('products.*', DB::raw('GROUP_CONCAT(DISTINCT catagories.name) as category_names'), DB::raw('GROUP_CONCAT(DISTINCT events.name) as event_names'))
+            ->leftJoin('products_cataories', 'products.id', '=', 'products_cataories.product_id')
+            ->leftJoin('catagories', 'products_cataories.cataory_id', '=', 'catagories.id')
+            ->leftJoin('products_events', 'products.id', '=', 'products_events.product_id')
+            ->leftJoin('events', 'products_events.event_id', '=', 'events.id')
+            ->groupBy('products.id', 'products.name', 'products.price', 'products.stock', 'products.thumbnail', 'products.detailProduct', 'products.detailShipping', 'products.condition', 'products.typeProduct', 'products.typeShipping', 'products.created_at', 'products.updated_at')
+            ->get();
+
+        // Process the result to convert event_names to an array
+        foreach ($products as $product) {
+            $product->event_names = explode(',', $product->event_names);
+        }
+
         return response()->json($products, 200);
     }
 

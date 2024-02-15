@@ -37,13 +37,10 @@ class PaymentsController extends Controller
         }
 
         $payments = Payment::get();
-        // $payments = Payment::get();
-        // return response()->json($payments, 200);
-        // dd($payments);
 
         $pp = new PromptPay();
         $target = '088-656-5433';
-        $promptPay = 456;
+        $promptPay = $data->price;
 
         $payload = $pp->generatePayload($target, $promptPay);
 
@@ -132,14 +129,14 @@ class PaymentsController extends Controller
                                 "contents" => [
                                     [
                                         "type" => "text",
-                                        "text" => "ยืนยันการชำระเงิน",
+                                        "text" => "คุณได้ชำระเงินแล้ว!",
                                         "size" => "xl",
                                         "weight" => "bold",
                                         "align" => "center",
                                     ],
                                     [
                                         "type" => "text",
-                                        "text" => "กำลังเตรียมการจัดส่ง!",
+                                        "text" => "กรุณารอยืนยันการชำระเงิน",
                                         "color" => "#999999",
                                         "align" => "center",
                                     ],

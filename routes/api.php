@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth.user', 'role:admin']], function () {
     Route::post("cardevent", [CardEventsController::class, 'store']);
     Route::put("update-cardevent/{id}", [CardEventsController::class, 'update']);
     Route::post("destroy-cardevent/{id}", [CardEventsController::class, 'destroy']);
+    Route::post("getConfirmOrder", [HomeController::class, 'getConfirmOrder']);
 
 
     // Route::post("order", [OrderController::class, 'store']);
@@ -65,6 +66,7 @@ Route::middleware(['auth.user'])->group(function () {
 Route::get('image/{path}', [ImagesController::class, 'show']);
 Route::post('image', [ImagesController::class, 'store']);
 Route::get("product", [ProductController::class, 'index']);
+Route::get("getCategory", [HomeController::class, 'getCategory']);
 Route::get("product/{id}", [ProductController::class, 'getId']);
 Route::get("cardevent", [CardEventsController::class, 'index']);
 Route::get("cardevent/{id}", [CardEventsController::class, 'getId']);
