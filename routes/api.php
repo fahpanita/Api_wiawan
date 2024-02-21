@@ -41,7 +41,9 @@ Route::group(['middleware' => ['auth.user', 'role:admin']], function () {
     Route::put("update-cardevent/{id}", [CardEventsController::class, 'update']);
     Route::post("destroy-cardevent/{id}", [CardEventsController::class, 'destroy']);
     Route::post("getConfirmOrder", [HomeController::class, 'getConfirmOrder']);
-
+    Route::get("getDataDashboard", [HomeController::class, 'getDataDashboard']);
+    Route::get("getSeller", [HomeController::class, 'getSeller']);
+    Route::get("getallSeller", [HomeController::class, 'getallSeller']);
 
     // Route::post("order", [OrderController::class, 'store']);
 
@@ -86,7 +88,7 @@ Route::post("notify", function (Request $request) {
     return response()->json($respont->json(), $respont->status());
 });
 
-Route::get("getSeller", [HomeController::class, 'getSeller']);
+
 
 // Route::get("getorder", function () {
 //     $pp = new \KS\PromptPay();

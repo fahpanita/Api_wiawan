@@ -65,7 +65,7 @@ class OrderController extends Controller
         $order->status = "Check Payment";
         // $order->type_shipping = "รับหน้าร้าน";
         $order->type_shipping = $data->type_shipping;
-        $order->order_date = $datetime->format('D-M-Y');
+        $order->order_date = $datetime->format('d-M-Y');
 
 
         if ($data->address) {
@@ -103,14 +103,14 @@ class OrderController extends Controller
                             "type" => "bubble",
                             "hero" => [
                                 "type" => "image",
-                                "url" => "https://img2.pic.in.th/pic/Group-5392.png",
+                                "url" => "https://i.ibb.co/4stMkjh/01.png",
                                 "size" => "full",
-                                "aspectRatio" => "20:13",
+                                "aspectRatio" => "20:8",
                                 "aspectMode" => "cover",
                                 "action" => [
                                     "type" => "uri",
-                                    "uri" => "http://linecorp.com/",
-                                ],
+                                    "uri" => "http://linecorp.com/"
+                                ]
                             ],
                             "body" => [
                                 "type" => "box",
@@ -118,16 +118,33 @@ class OrderController extends Controller
                                 "contents" => [
                                     [
                                         "type" => "text",
-                                        "text" => "ได้รับคำสั่งซื้อ",
                                         "weight" => "bold",
                                         "size" => "xl",
+                                        "contents" => [
+                                            [
+                                                "type" => "span",
+                                                "text" => "ได้รับคำสั่งซื้อ",
+                                                "color" => "#A58151"
+                                            ]
+                                        ],
                                         "align" => "center"
                                     ],
-                                    ["type" => "separator"],
+                                    [
+                                        "type" => "text",
+                                        "text" => "ขอบคุณสำหรับการสั่งซื้อสินค้า",
+                                        "margin" => "md",
+                                        "size" => "sm",
+                                        "align" => "center",
+                                        "color" => "#aaaaaa"
+                                    ],
+                                    [
+                                        "type" => "separator",
+                                        "margin" => "xxl"
+                                    ],
                                     [
                                         "type" => "box",
                                         "layout" => "vertical",
-                                        "margin" => "lg",
+                                        "margin" => "none",
                                         "spacing" => "sm",
                                         "contents" => [
                                             [
@@ -137,10 +154,11 @@ class OrderController extends Controller
                                                 "contents" => [
                                                     [
                                                         "type" => "text",
-                                                        "text" => "หมายเลขคำสั่งซื้อ",
+                                                        "text" => "หมายเลขคำสั่งซื้อ :",
                                                         "color" => "#aaaaaa",
                                                         "size" => "sm",
-                                                        "flex" => 4,
+                                                        "flex" => 5,
+                                                        "align" => "end"
                                                     ],
                                                     [
                                                         "type" => "text",
@@ -148,9 +166,10 @@ class OrderController extends Controller
                                                         "wrap" => true,
                                                         "color" => "#666666",
                                                         "size" => "sm",
-                                                        "flex" => 5,
-                                                    ],
+                                                        "flex" => 5
+                                                    ]
                                                 ],
+                                                "margin" => "xxl"
                                             ],
                                             [
                                                 "type" => "box",
@@ -159,10 +178,11 @@ class OrderController extends Controller
                                                 "contents" => [
                                                     [
                                                         "type" => "text",
-                                                        "text" => "วันที่สั่งซื้อ",
+                                                        "text" => "วันที่ชำระเงิน :",
                                                         "color" => "#aaaaaa",
                                                         "size" => "sm",
-                                                        "flex" => 3,
+                                                        "flex" => 5,
+                                                        "align" => "end"
                                                     ],
                                                     [
                                                         "type" => "text",
@@ -170,13 +190,13 @@ class OrderController extends Controller
                                                         "wrap" => true,
                                                         "color" => "#666666",
                                                         "size" => "sm",
-                                                        "flex" => 8,
-                                                    ],
-                                                ],
-                                            ],
-                                        ],
-                                    ],
-                                ],
+                                                        "flex" => 5
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
                             ],
                             "footer" => [
                                 "type" => "box",
@@ -184,13 +204,18 @@ class OrderController extends Controller
                                 "spacing" => "sm",
                                 "contents" => [
                                     [
-                                        "type" => "box",
-                                        "layout" => "vertical",
-                                        "contents" => [],
-                                        "margin" => "sm",
-                                    ],
+                                        "type" => "button",
+                                        "style" => "link",
+                                        "height" => "sm",
+                                        "action" => [
+                                            "type" => "uri",
+                                            "label" => "WEBSITE",
+                                            "uri" => "https://waiwan.com"
+                                        ],
+                                        "color" => "#A58151"
+                                    ]
                                 ],
-                                "flex" => 0,
+                                "flex" => 0
                             ],
                         ],
                     ],

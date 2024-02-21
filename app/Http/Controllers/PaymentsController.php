@@ -59,7 +59,7 @@ class PaymentsController extends Controller
 
         $payload = $pp->generatePayload($target, $promptPay);
 
-        dd($payload);
+        // dd($payload);
 
         return response()->json(['payload' => $payload, 'amount' => $promptPay]);
     }
@@ -122,6 +122,9 @@ class PaymentsController extends Controller
         $payment->save();
 
         $orderId = (string)$order_id;
+        $totalPrices = (string)$totalPrice;
+
+        $date = Carbon::now()->format('d/M/Y');
 
         $token = env("LINE_CHANNAL_ACCECT_TOKEN");
         $url = "https://api.line.me/v2/bot/message/push";
@@ -139,14 +142,14 @@ class PaymentsController extends Controller
                             "type" => "bubble",
                             "hero" => [
                                 "type" => "image",
-                                "url" => "https://img2.pic.in.th/pic/Group-5392.png",
+                                "url" => "https://i.ibb.co/jhV2qFY/02.png",
                                 "size" => "full",
-                                "aspectRatio" => "20:13",
+                                "aspectRatio" => "20:8",
                                 "aspectMode" => "cover",
                                 "action" => [
                                     "type" => "uri",
-                                    "uri" => "http://linecorp.com/",
-                                ],
+                                    "uri" => "http://linecorp.com/"
+                                ]
                             ],
                             "body" => [
                                 "type" => "box",
@@ -154,22 +157,33 @@ class PaymentsController extends Controller
                                 "contents" => [
                                     [
                                         "type" => "text",
-                                        "text" => "คุณได้ชำระเงินแล้ว!",
-                                        "size" => "xl",
                                         "weight" => "bold",
-                                        "align" => "center",
+                                        "size" => "xl",
+                                        "contents" => [
+                                            [
+                                                "type" => "span",
+                                                "text" => "คุณได้แจ้งชำระเงินแล้ว !",
+                                                "color" => "#A58151"
+                                            ]
+                                        ],
+                                        "align" => "center"
                                     ],
                                     [
                                         "type" => "text",
                                         "text" => "กรุณารอยืนยันการชำระเงิน",
-                                        "color" => "#999999",
+                                        "margin" => "md",
+                                        "size" => "sm",
                                         "align" => "center",
+                                        "color" => "#aaaaaa"
                                     ],
-                                    ["type" => "separator"],
+                                    [
+                                        "type" => "separator",
+                                        "margin" => "xxl"
+                                    ],
                                     [
                                         "type" => "box",
                                         "layout" => "vertical",
-                                        "margin" => "lg",
+                                        "margin" => "none",
                                         "spacing" => "sm",
                                         "contents" => [
                                             [
@@ -179,10 +193,11 @@ class PaymentsController extends Controller
                                                 "contents" => [
                                                     [
                                                         "type" => "text",
-                                                        "text" => "หมายเลขคำสั่งซื้อ",
+                                                        "text" => "หมายเลขคำสั่งซื้อ :",
                                                         "color" => "#aaaaaa",
                                                         "size" => "sm",
-                                                        "flex" => 4,
+                                                        "flex" => 5,
+                                                        "align" => "end"
                                                     ],
                                                     [
                                                         "type" => "text",
@@ -190,13 +205,60 @@ class PaymentsController extends Controller
                                                         "wrap" => true,
                                                         "color" => "#666666",
                                                         "size" => "sm",
-                                                        "flex" => 5,
-                                                    ],
+                                                        "flex" => 5
+                                                    ]
                                                 ],
+                                                "margin" => "xxl"
                                             ],
-                                        ],
-                                    ],
-                                ],
+                                            [
+                                                "type" => "box",
+                                                "layout" => "baseline",
+                                                "spacing" => "sm",
+                                                "contents" => [
+                                                    [
+                                                        "type" => "text",
+                                                        "text" => "ยอดรวม :",
+                                                        "color" => "#aaaaaa",
+                                                        "size" => "sm",
+                                                        "flex" => 5,
+                                                        "align" => "end"
+                                                    ],
+                                                    [
+                                                        "type" => "text",
+                                                        "text" => $totalPrices,
+                                                        "wrap" => true,
+                                                        "color" => "#666666",
+                                                        "size" => "sm",
+                                                        "flex" => 5
+                                                    ]
+                                                ]
+                                            ],
+                                            [
+                                                "type" => "box",
+                                                "layout" => "baseline",
+                                                "spacing" => "sm",
+                                                "contents" => [
+                                                    [
+                                                        "type" => "text",
+                                                        "text" => "วันที่ชำระเงิน :",
+                                                        "color" => "#aaaaaa",
+                                                        "size" => "sm",
+                                                        "flex" => 5,
+                                                        "align" => "end"
+                                                    ],
+                                                    [
+                                                        "type" => "text",
+                                                        "text" => $date,
+                                                        "wrap" => true,
+                                                        "color" => "#666666",
+                                                        "size" => "sm",
+                                                        "flex" => 5
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
                             ],
                             "footer" => [
                                 "type" => "box",
@@ -204,19 +266,23 @@ class PaymentsController extends Controller
                                 "spacing" => "sm",
                                 "contents" => [
                                     [
-                                        "type" => "box",
-                                        "layout" => "vertical",
-                                        "contents" => [],
-                                        "margin" => "sm",
-                                    ],
+                                        "type" => "button",
+                                        "style" => "link",
+                                        "height" => "sm",
+                                        "action" => [
+                                            "type" => "uri",
+                                            "label" => "WEBSITE",
+                                            "uri" => "https://waiwan.com"
+                                        ],
+                                        "color" => "#A58151"
+                                    ]
                                 ],
-                                "flex" => 0,
+                                "flex" => 0
                             ],
                         ],
                     ],
                 ],
-            ],
-
+            ]
         );
 
         if ($responseNotify->failed()) {
