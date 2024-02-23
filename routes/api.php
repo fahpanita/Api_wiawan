@@ -44,6 +44,9 @@ Route::group(['middleware' => ['auth.user', 'role:admin']], function () {
     Route::get("getDataDashboard", [HomeController::class, 'getDataDashboard']);
     Route::get("getSeller", [HomeController::class, 'getSeller']);
     Route::get("getallSeller", [HomeController::class, 'getallSeller']);
+    Route::get("getShippingLocation", [HomeController::class, 'getShippingLocation']);
+    Route::get("getShippingStore", [HomeController::class, 'getShippingStore']);
+
 
     // Route::post("order", [OrderController::class, 'store']);
 
