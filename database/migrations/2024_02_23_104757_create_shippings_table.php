@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string("transport");
             $table->string("tracking_number");
             $table->string("receive_day");
+            $table->string("status");
             $table->timestamps();
         });
     }

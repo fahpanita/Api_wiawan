@@ -31,6 +31,7 @@ class ProductController extends Controller
         // Process the result to convert event_names to an array
         foreach ($products as $product) {
             $product->event_names = explode(',', $product->event_names);
+            $product->category_names = explode(',', $product->category_names);
         }
 
         return response()->json($products, 200);

@@ -26,6 +26,7 @@ class PaymentsController extends Controller
     {
 
         $data = json_decode($request->getContent());
+
         $array_data = (array) $data;
 
         $validator = Validator::make($array_data, [
@@ -59,21 +60,9 @@ class PaymentsController extends Controller
 
         $payload = $pp->generatePayload($target, $promptPay);
 
-        // dd($payload);
-
         return response()->json(['payload' => $payload, 'amount' => $promptPay]);
     }
-    // $payments = Payment::get();
-    // $data = json_decode($request->getContent());
-    // $array_data = (array) $data;
-    // $validator = Validator::make($array_data, [
-    //     'order_id' => 'required|exists:orders,id',
-    //     'price' => 'required'
-    // ]);
 
-    // if ($validator->fails()) {
-    //     return response()->json(["message" => $validator->errors()->first()], 400);
-    // }
 
     public function create()
     {
@@ -106,12 +95,13 @@ class PaymentsController extends Controller
             ->select('products.typeShipping')
             ->join('products', 'order_items.product_id', '=', 'products.id')
             ->where('order_items.order_id', '=', $request->order_id)
-            ->orderBy('products.typeShipping', 'desc')
+            ->orderBy('products.typeShipping', 'asc')
             ->first()->typeShipping;
 
 
         $totalPrice = $totalPriceSum + $priceShiping;
 
+        // dd($totalPrice);
 
         $payment = new Payment();
         $payment->user_id = Auth::id();

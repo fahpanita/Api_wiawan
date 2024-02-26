@@ -223,11 +223,102 @@ class OrderController extends Controller
             ]
         );
 
-        if ($responseNotify->failed()) {
+        if ($responseNotify->successful()) {
+
+            $token = env("LINE_CHANNAL_ACCECT_TOKEN");
+            $url = "https://api.line.me/v2/bot/message/push";
+            $date = Carbon::now()->format('d/M/Y');
+            $responseNotify = Http::withHeaders([
+                'Authorization' => "Bearer " . $token,
+            ])->post(
+                $url,
+                [
+                    "to" => "U208668baea191e8cb759b4e3ba12b290",
+                    "messages" => [
+                        [
+                            "type" => "flex",
+                            "altText" => "This is a Flex Message",
+                            "contents" => [
+                                "type" => "bubble",
+                                "hero" => [
+                                    "type" => "image",
+                                    "url" => "https://i.postimg.cc/3xDxd9v9/Group-5392.png",
+                                    "size" => "xl",
+                                    "aspectRatio" => "20:13",
+                                    "aspectMode" => "cover",
+                                    "action" => [
+                                        "type" => "uri",
+                                        "uri" => "http://linecorp.com/"
+                                    ]
+                                ],
+                                "body" => [
+                                    "type" => "box",
+                                    "layout" => "vertical",
+                                    "contents" => [
+                                        [
+                                            "type" => "text",
+                                            "text" => "มีลูกค้าสั่งออเดอร์ !",
+                                            "weight" => "bold",
+                                            "size" => "xl",
+                                            "align" => "center"
+                                        ],
+                                        [
+                                            "type" => "box",
+                                            "layout" => "vertical",
+                                            "margin" => "lg",
+                                            "spacing" => "sm",
+                                            "contents" => [
+                                                [
+                                                    "type" => "box",
+                                                    "layout" => "baseline",
+                                                    "spacing" => "sm",
+                                                    "contents" => [
+                                                        [
+                                                            "type" => "text",
+                                                            "text" => "กรุณาเช็คสินค้าและจัดส่ง",
+                                                            "wrap" => true,
+                                                            "color" => "#666666",
+                                                            "size" => "sm",
+                                                            "flex" => 5,
+                                                            "align" => "center"
+                                                        ]
+                                                    ]
+                                                ],
+                                                [
+                                                    "type" => "box",
+                                                    "layout" => "baseline",
+                                                    "spacing" => "sm",
+                                                    "contents" => [
+                                                        [
+                                                            "type" => "text",
+                                                            "text" => "หมายเลขคำสั่งซื้อ",
+                                                            "color" => "#aaaaaa",
+                                                            "size" => "sm",
+                                                            "flex" => 4
+                                                        ],
+                                                        [
+                                                            "type" => "text",
+                                                            "text" => $orderId,
+                                                            "wrap" => true,
+                                                            "color" => "#666666",
+                                                            "size" => "sm",
+                                                            "flex" => 4
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+            return response()->json(["id" => $orderId], 200);
+        } else {
             return response($responseNotify, 400);
         }
-
-        return response()->json(["id" => $orderId], 200);
     }
 
 
