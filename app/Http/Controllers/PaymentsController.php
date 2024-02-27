@@ -28,7 +28,6 @@ class PaymentsController extends Controller
         $data = json_decode($request->getContent());
 
         $array_data = (array) $data;
-
         $validator = Validator::make($array_data, [
             'order_id' => 'required|exists:orders,id',
         ]);

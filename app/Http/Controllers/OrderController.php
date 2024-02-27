@@ -178,7 +178,7 @@ class OrderController extends Controller
                                                 "contents" => [
                                                     [
                                                         "type" => "text",
-                                                        "text" => "วันที่ชำระเงิน :",
+                                                        "text" => "วันที่สั่งซื้อ :",
                                                         "color" => "#aaaaaa",
                                                         "size" => "sm",
                                                         "flex" => 5,
