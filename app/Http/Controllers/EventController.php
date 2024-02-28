@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Events;
+use App\Models\Products;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
@@ -72,6 +74,30 @@ class EventController extends Controller
     {
         //
     }
+
+    public function getEvent(Request $request)
+    {
+        $eventIds = $request->input('eventIds');
+
+        $products = Products::select('products.*')
+            ->join('products_events', 'products.id', '=', 'products_events.product_id')
+            ->join(DB::raw("(WITH RECURSIVE events_tree  AS (
+            SELECT id, name, parent_id
+            FROM events
+            WHERE id IN (" . implode(',', $eventIds) . ")  -- Use implode to convert array to string
+            UNION
+            SELECT c.id, c.name, c.parent_id
+            FROM events c
+            JOIN events_tree  ct ON c.parent_id = ct.id
+          )
+          SELECT * FROM events_tree ) as selected_events"), function ($join) {
+                $join->on('selected_events.id', '=', 'products_events.event_id');
+            })
+            ->get();
+
+        return response()->json(['data' => $products]);
+    }
+
 
     public function edit($id)
     {

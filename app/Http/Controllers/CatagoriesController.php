@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Catagories;
+use App\Models\Products;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class CatagoriesController extends Controller
@@ -70,6 +73,30 @@ class CatagoriesController extends Controller
     {
         //
     }
+
+    public function getCategory(Request $request)
+    {
+        $categoryIds = $request->input('categoryIds');
+
+        $products = Products::select('products.*')
+            ->join('products_cataories', 'products.id', '=', 'products_cataories.product_id')
+            ->join(DB::raw("(WITH RECURSIVE category_tree AS (
+            SELECT id, name, parent_id
+            FROM catagories
+            WHERE id IN (" . implode(',', $categoryIds) . ")  -- Use implode to convert array to string
+            UNION
+            SELECT c.id, c.name, c.parent_id
+            FROM catagories c
+            JOIN category_tree ct ON c.parent_id = ct.id
+          )
+          SELECT * FROM category_tree) as selected_categories"), function ($join) {
+                $join->on('selected_categories.id', '=', 'products_cataories.cataory_id');
+            })
+            ->get();
+
+        return response()->json(['data' => $products]);
+    }
+
 
     public function edit($id)
     {

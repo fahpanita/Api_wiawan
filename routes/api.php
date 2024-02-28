@@ -73,13 +73,17 @@ Route::middleware(['auth.user'])->group(function () {
 Route::get('image/{path}', [ImagesController::class, 'show']);
 Route::post('image', [ImagesController::class, 'store']);
 Route::get("product", [ProductController::class, 'index']);
-Route::get("getCategory", [HomeController::class, 'getCategory']);
+// Route::get("getCategory", [HomeController::class, 'getCategory']);
 Route::get("product/{id}", [ProductController::class, 'getId']);
 Route::get("cardevent", [CardEventsController::class, 'index']);
 Route::get("cardevent/{id}", [CardEventsController::class, 'getId']);
 Route::get("parent-event", [EventController::class, 'parentEvent']);
 Route::get("parent-catagories", [CatagoriesController::class, 'parentCatagory']);
 Route::get("getPromptPay", [PaymentsController::class, 'getPromptPay']);
+
+Route::get("getCategory", [CatagoriesController::class, 'getCategory']);
+
+Route::get("getEvent", [EventController::class, 'getEvent']);
 
 Route::get("map/address", function (Request $request) {
     $url = "https://api.longdo.com/map/services/address?lon=$request->lon&lat=$request->lat&key=$request->key";
