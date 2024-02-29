@@ -97,6 +97,16 @@ class CatagoriesController extends Controller
         return response()->json(['data' => $products]);
     }
 
+    public function getSearch(Request $request)
+    {
+        $searchQuery = $request->input('searchQuery');
+
+        $products = Products::where('name', 'LIKE', '%' . $searchQuery . '%')
+            ->orWhere('name', 'LIKE', '%' . $searchQuery . '% COLLATE utf8mb4_general_ci')
+            ->get();
+
+        return response()->json(['data' => $products]);
+    }
 
     public function edit($id)
     {

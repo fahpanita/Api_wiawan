@@ -81,8 +81,10 @@ Route::get("parent-event", [EventController::class, 'parentEvent']);
 Route::get("parent-catagories", [CatagoriesController::class, 'parentCatagory']);
 Route::get("getPromptPay", [PaymentsController::class, 'getPromptPay']);
 
-Route::get("getCategory", [CatagoriesController::class, 'getCategory']);
+// Route::get("getSearch", [CatagoriesController::class, 'getSearch']);
+Route::get("getSearch", [CatagoriesController::class, 'getSearch']);
 
+Route::get("getCategory", [CatagoriesController::class, 'getCategory']);
 Route::get("getEvent", [EventController::class, 'getEvent']);
 
 Route::get("map/address", function (Request $request) {

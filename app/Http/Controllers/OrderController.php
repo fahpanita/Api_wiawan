@@ -257,7 +257,7 @@ class OrderController extends Controller
                                     "contents" => [
                                         [
                                             "type" => "text",
-                                            "text" => "มีลูกค้าสั่งออเดอร์ !",
+                                            "text" => "มีคำสั่งซื้อใหม่!",
                                             "weight" => "bold",
                                             "size" => "xl",
                                             "align" => "center"
