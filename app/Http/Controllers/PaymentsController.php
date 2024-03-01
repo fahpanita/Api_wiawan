@@ -244,6 +244,23 @@ class PaymentsController extends Controller
                                                         "flex" => 5
                                                     ]
                                                 ]
+                                            ],
+                                            [
+                                                "type" => "box",
+                                                "layout" => "vertical",
+                                                "contents" => [
+                                                    [
+                                                        "type" => "button",
+                                                        "action" => [
+                                                            "type" => "uri",
+                                                            "label" => "กดรับแต้มสะสมของคุณ",
+                                                            "uri" => "https://liff.line.me/1654883656-XqwKRkd4?aid=940aeljm&cid=8752DCDC910DFB989499C360C8F8B080"
+                                                        ],
+                                                        "color" => "#A58151",
+                                                        "height" => "sm",
+                                                        "margin" => "0px"
+                                                    ]
+                                                ]
                                             ]
                                         ]
                                     ]

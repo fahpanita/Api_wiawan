@@ -131,7 +131,7 @@ class OrderController extends Controller
                                     ],
                                     [
                                         "type" => "text",
-                                        "text" => "ขอบคุณสำหรับการสั่งซื้อสินค้า",
+                                        "text" => "ขอบคุณสำหรับการสั่่งซื้อสินค้า",
                                         "margin" => "md",
                                         "size" => "sm",
                                         "align" => "center",
@@ -178,7 +178,7 @@ class OrderController extends Controller
                                                 "contents" => [
                                                     [
                                                         "type" => "text",
-                                                        "text" => "วันที่สั่งซื้อ :",
+                                                        "text" => "วันที่ชำระเงิน :",
                                                         "color" => "#aaaaaa",
                                                         "size" => "sm",
                                                         "flex" => 5,
@@ -193,9 +193,12 @@ class OrderController extends Controller
                                                         "flex" => 5
                                                     ]
                                                 ]
+                                            ],
+                                            [
+                                                "type" => "separator"
                                             ]
                                         ]
-                                    ]
+                                    ],
                                 ]
                             ],
                             "footer" => [
@@ -210,12 +213,14 @@ class OrderController extends Controller
                                         "action" => [
                                             "type" => "uri",
                                             "label" => "WEBSITE",
-                                            "uri" => "https://waiwan.com"
+                                            "uri" => "https://waiwan.web.app"
                                         ],
-                                        "color" => "#A58151"
+                                        "color" => "#A58151",
+                                        "margin" => "0px"
                                     ]
                                 ],
-                                "flex" => 0
+                                "flex" => 0,
+                                "margin" => "0px"
                             ],
                         ],
                     ],
@@ -242,10 +247,10 @@ class OrderController extends Controller
                                 "type" => "bubble",
                                 "hero" => [
                                     "type" => "image",
-                                    "url" => "https://i.postimg.cc/3xDxd9v9/Group-5392.png",
-                                    "size" => "xl",
-                                    "aspectRatio" => "20:13",
-                                    "aspectMode" => "cover",
+                                    "url" => "https://i.postimg.cc/5t2bZX38/Logo-2.png",
+                                    "size" => "lg",
+                                    "aspectRatio" => "20:20",
+                                    "aspectMode" => "fit",
                                     "action" => [
                                         "type" => "uri",
                                         "uri" => "http://linecorp.com/"
@@ -257,7 +262,7 @@ class OrderController extends Controller
                                     "contents" => [
                                         [
                                             "type" => "text",
-                                            "text" => "มีคำสั่งซื้อใหม่!",
+                                            "text" => "มีรายการคำสั่งซื้อใหม่!",
                                             "weight" => "bold",
                                             "size" => "xl",
                                             "align" => "center"

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Psy\Readline\Hoa\Console;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
@@ -266,6 +267,71 @@ class HomeController extends Controller
                 return $item->shipping_status !== 'complete';
             })
             ->values(); // Convert to numeric array
+
+        return response()->json($data, 200);
+    }
+
+    public function getHistoryUser()
+    {
+
+        $userId = 1;
+
+        $data = DB::table('orders')
+            ->select(
+                'orders.id as order_id',
+                'orders.user_id',
+                'users.line_id',
+                'orders.address_id',
+                'orders.status',
+                'orders.type_shipping',
+                'orders.order_date',
+                DB::raw('GROUP_CONCAT(DISTINCT order_items.id) as order_item_ids'),
+                DB::raw('GROUP_CONCAT(DISTINCT order_items.product_id) as product_ids'),
+                DB::raw('GROUP_CONCAT(DISTINCT order_items.amount) as amounts'),
+                DB::raw('GROUP_CONCAT(DISTINCT order_items.price) as order_item_prices'),
+                DB::raw('GROUP_CONCAT(DISTINCT payments.id) as payment_ids'),
+                DB::raw('GROUP_CONCAT(DISTINCT payments.user_id) as payment_user_ids'),
+                DB::raw('GROUP_CONCAT(DISTINCT payments.price) as payment_prices'),
+                DB::raw('GROUP_CONCAT(DISTINCT payments.status) as payment_statuses'),
+                DB::raw('GROUP_CONCAT(DISTINCT payments.slip_img) as slip_imgs'),
+                DB::raw('GROUP_CONCAT(DISTINCT addresses.id) as address_ids'),
+                DB::raw('GROUP_CONCAT(DISTINCT addresses.name) as address_names'),
+                DB::raw('GROUP_CONCAT(DISTINCT addresses.street) as streets'),
+                DB::raw('GROUP_CONCAT(DISTINCT addresses.district) as districts'),
+                DB::raw('GROUP_CONCAT(DISTINCT addresses.subdistrict) as subdistricts'),
+                DB::raw('GROUP_CONCAT(DISTINCT addresses.province) as provinces'),
+                DB::raw('GROUP_CONCAT(DISTINCT addresses.zip_code) as zip_codes'),
+                DB::raw('GROUP_CONCAT(DISTINCT addresses.phone) as phones'),
+                DB::raw('GROUP_CONCAT(DISTINCT products.id) as product_ids'),
+                DB::raw('GROUP_CONCAT(DISTINCT products.name) as product_names'),
+                DB::raw('GROUP_CONCAT(DISTINCT products.thumbnail) as thumbnail'),
+                'shippings.transport',
+                'shippings.tracking_number',
+                'shippings.receive_day',
+                'shippings.status as shipping_status'
+            )
+            ->where('orders.user_id', $userId)
+            ->leftJoin('order_items', 'orders.id', '=', 'order_items.order_id')
+            ->leftJoin('payments', 'orders.id', '=', 'payments.order_id')
+            ->leftJoin('addresses', 'orders.address_id', '=', 'addresses.id')
+            ->leftJoin('products', 'order_items.product_id', '=', 'products.id')
+            ->leftJoin('users', 'orders.user_id', '=', 'users.id')
+            ->leftJoin('shippings', 'orders.id', '=', 'shippings.order_id')
+            ->groupBy(
+                'orders.id',
+                'orders.user_id',
+                'users.line_id',
+                'orders.address_id',
+                'orders.status',
+                'orders.type_shipping',
+                'orders.order_date',
+                'shippings.transport',
+                'shippings.tracking_number',
+                'shippings.receive_day',
+                'shippings.status'
+            )
+            ->orderBy('orders.id', 'DESC')
+            ->get();
 
         return response()->json($data, 200);
     }

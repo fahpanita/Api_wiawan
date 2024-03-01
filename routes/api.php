@@ -99,6 +99,8 @@ Route::post("notify", function (Request $request) {
     return response()->json($respont->json(), $respont->status());
 });
 
+Route::get("getHistoryUser", [HomeController::class, 'getHistoryUser']);
+
 
 
 // Route::get("getorder", function () {
